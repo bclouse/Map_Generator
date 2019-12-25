@@ -11,6 +11,7 @@ int RING_NUM;
 boolean hasBeenUpdated;
 long current;
 long elapsed;
+boolean invertWater;
 
 void setup() {
   size(2000, 1000);
@@ -29,15 +30,15 @@ void setup() {
   sliders.add(new Slider(180, -180, -offset.x, new PVector(750*scale, 300*scale), new PVector(400*scale, 30*scale), 15*scale, true, "CW/CCW"));
   sliders.add(new Slider(-90, 90, offset.y, new PVector(750*scale, 350*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Rotate U/D"));
   sliders.add(new Slider(0, 360, -offset.z, new PVector(750*scale, 400*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Slide L/R"));
-  m = new Flat_Map(0*scale, 125*scale, 500, 250, noiseSeed, 10, 4, 2);
+  m = new Flat_Map(0*scale, 125*scale, 500, 250, noiseSeed, 10, 4);
   m.setOffset(offset);
   m.setOctaves((int)sliders.get(0).getSliderValue());
   m.setLacunarity(sliders.get(1).getSliderValue());
   m.setWaterLevel(sliders.get(2).getSliderValue());
   m.stretch = sliders.get(3).getSliderValue();
   m.setZoom(sliders.get(4).getSliderValue());
+  invertWater = false;
   
-  m.generateMap();
   m.generatePixels();
   //sliders.get(6).lock();
   //sliders.get(7).lock();
@@ -62,9 +63,11 @@ void draw() {
   if (stretch != sliders.get(3).getSliderValue()) {
     m.stretch = sliders.get(3).getSliderValue();
   }
-  if (zoom != sliders.get(4).getSliderValue()) {
+  if (Radius != sliders.get(4).getSliderValue()) {
     Radius = sliders.get(4).getSliderValue();
     m.setZoom(sliders.get(4).getSliderValue());
+    m.waterGenerator.sphereFrame.updateUnitFrame();
+    println(Radius);
   }
   if (sliders.get(5).hasUpdated() || sliders.get(6).hasUpdated()|| sliders.get(7).hasUpdated()) {  //|| offset.y != sliders.get(6).getSliderValue()
     //println("UPDATE");
@@ -76,7 +79,7 @@ void draw() {
   for (int i = 0; i < sliders.size(); i++) {
     if (sliders.get(i).hasUpdated()) {
       if (!hasBeenUpdated) {
-        m.generateMap();
+        
         m.generatePixels();
         hasBeenUpdated = true;
       }
@@ -97,14 +100,14 @@ void keyPressed() {
     if (noiseSeed > 0) {
       noiseSeed--;
       m.setSeed(noiseSeed);
-      m.generateMap();
+      
       m.generatePixels();
     } 
     break;
   case RIGHT: 
     noiseSeed++; 
     m.setSeed(noiseSeed);
-    m.generateMap();
+    
     m.generatePixels();
     break;
   }
@@ -112,6 +115,10 @@ void keyPressed() {
   case '\n':
 
     println("Rotations = [ "+offset.x+", "+offset.y+" ]");
+    break;
+    case ' ':
+    invertWater = !invertWater;
+    m.generatePixels();
     break;
     //case '+': 
     //  //m.changeResolution(1); 

@@ -4,7 +4,6 @@ class NoiseGenerator {
   float zoom;
   int noiseDetail;
   int seed;
-  float radius;
   Map<Integer, Float> sig;
   ArrayList<Float> phiAngles;
   PVector rotations;
@@ -17,7 +16,7 @@ class NoiseGenerator {
    ===============================================================
    =============================================================*/
 
-  NoiseGenerator(float w, float h, float z, int s, float r) {
+  NoiseGenerator(float w, float h, float z, int s) {
     size = new PVector(w, h);
     noiseMap = new float[(int) w][(int) h];
     zoom = z;
@@ -25,9 +24,8 @@ class NoiseGenerator {
     seed = s;
     sig = new HashMap<Integer, Float>();
     phiAngles = new ArrayList<Float>();
-    radius = r;
     rotations = new PVector(0, 0, 0);
-    sphereFrame = new SphereFrame(radius, w, h);
+    sphereFrame = new SphereFrame(w, h);
     sphereFrame.updateRotation();
     max = new PVector();
     mid = new PVector();
@@ -135,29 +133,6 @@ class NoiseGenerator {
     return sig.get(Key);
   }
 
-  //GET PHI ANGLES FUNCTION: 
-  ArrayList<Float> getPhiAngles(float radius, float resolution, float offset) {
-    float z;
-
-    ArrayList<Float> output = new ArrayList<Float>();
-    for (int i = 0; i < resolution; i++) {
-      z = resolution/2-i;
-      z = map(z, 0, resolution/2, 0, radius);
-      output.add(acos(z/radius)+offset);
-    }
-    return output;
-  }
-
-  PVector getCartesian(PVector sphericalInfo) {                            //Spherical Info must be ordered as so: [radius, theta, phi]
-    float x = sphericalInfo.x*sin(sphericalInfo.z)*cos(sphericalInfo.y);       //x = r*sin(phi)*cos(theta)
-    float y = sphericalInfo.x*sin(sphericalInfo.z)*sin(sphericalInfo.y);       //y = r*sin(phi)*sin(theta)
-    float z = sphericalInfo.x*cos(sphericalInfo.z);                            //z = r*cos(phi)
-
-    PVector output = new PVector(x, y, z);
-
-    return output;
-  }
-
   /*=============================================================
    ===============================================================
    GET FUNCTIONS
@@ -182,11 +157,5 @@ class NoiseGenerator {
     rotations.set(p.x, p.y, p.z);
     sphereFrame.changeRotation(rotations);
     sphereFrame.updateRotation();
-    //println(offset);
-  }
-
-  void setRadius(float r) {
-    radius = r;
-    sphereFrame.setRadius(r);
   }
 }

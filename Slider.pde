@@ -14,6 +14,11 @@ class Slider {
   boolean locked;
   boolean hasBeenUpdated;
 
+  /*=============================================================
+   ===============================================================
+   INTITIALIZING
+   ===============================================================
+   =============================================================*/
 
   Slider (float maximumValue, float minimumValue, float startingValue, PVector p, PVector s, float bh, boolean snapInteger, String l) {
     max = maximumValue;

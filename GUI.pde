@@ -4,6 +4,12 @@ class GUI {
   private PVector pos, size;
   int currentFrame;
   int numFrames;
+
+  /*=============================================================
+   ===============================================================
+   INTITIALIZING
+   ===============================================================
+   =============================================================*/
   
   GUI(float x, float y, float w, float h, int frames, color f) {
     pos = new PVector(x,y);

@@ -1,5 +1,4 @@
 class SphereFrame {
-  float radius;
   PVector[][] flatFrame;    //takes x, y and returns the corresponding 3D coordinates
   PVector[][] unitFrame;    //takes x, y and returns the corresponding 3D coordinates
   PVector[][] wireFrame;    //takes x, y and returns the corresponding spherical coordinates (not including the radius)
@@ -16,8 +15,7 @@ class SphereFrame {
    ===============================================================
    =============================================================*/
 
-  SphereFrame(float r, float w, float h) {
-    this.radius = r;
+  SphereFrame(float w, float h) {
     size = new PVector(w, h);
     rotation = new PVector(0, 0, 0);
     unitFrame = new PVector[(int)w][(int)h];
@@ -34,17 +32,6 @@ class SphereFrame {
 
 
     updateUnitFrame();
-    //ArrayList<Float> phi = getPhiAngles(radius, h, 0);
-    //float theta;
-    //PVector dummy;
-    //for (int y = 0; y < h; y++) {
-    //  for (int x = 0; x < w; x++) {
-    //    theta = radians(x/w*360);
-    //    dummy = getCartesian(new PVector(radius, theta, phi.get(y)));
-    //    unitFrame[x][y] = new PVector(dummy.x, dummy.y, dummy.z);
-    //    flatFrame[x][y] = new PVector(dummy.x, dummy.y, dummy.z);
-    //  }
-    //}
   }
 
   /*=============================================================
@@ -55,23 +42,17 @@ class SphereFrame {
 
   void updateUnitFrame() {
     float theta;
-    phis = getPhiAngles(radius, size.y, 0);
+    phis = getPhiAngles(size.y, 0);
     PVector dummy;
     int phi;
     int t;
     int prev = 0;
 
 
-    //println(((int)degrees(phis.get(0))));
     for (int y = 0; y < size.y; y++) {
-      //phi = (int)degrees(phis.get(y));
-      //if ((phi+90)%15 == 0 && phi != prev) {
-      //  //println(phi);
-      //  prev = phi;
-      //}
       for (int x = 0; x < size.x; x++) {
         theta = x/size.x*360;
-        dummy = getCartesian(new PVector(radius, radians(theta), phis.get(y)));
+        dummy = getCartesian(new PVector(Radius, radians(theta), phis.get(y)));
         unitFrame[x][y] = new PVector(dummy.x, dummy.y, dummy.z);
         flatFrame[x][y] = new PVector(dummy.x, dummy.y, dummy.z);
         wireFrame[x][y] = new PVector(0, 0, 0);
@@ -83,7 +64,6 @@ class SphereFrame {
       }
     }
 
-    //updateRotation();
   }
 
   PVector updateRotationAt(int x, int y) {
@@ -124,7 +104,6 @@ class SphereFrame {
     for (int y = 0; y < size.y; y++) {
       for (int x = 0; x < size.x; x++) {
         flatFrame[x][y].set(unitFrame[x][y].x, unitFrame[x][y].y, unitFrame[x][y].z);
-        //wireFrame[x][y].set(x, y, 0);
         if (rotation.z != 0) {
           flatFrame[x][y].set(rotZ(rotation.z, flatFrame[x][y]));
         }
@@ -146,31 +125,23 @@ class SphereFrame {
           phi = 15-phi;
         }
         wireFrame[x][y].set(theta, phi, 0);
-        //if (x == y) {
-        //  println(wireFrame[x][y].x+"\t\t"+wireFrame[x][y].y);
-        //}
       }
-      //println("[ "+0+", "+y+" ] = "+phi);
-      //println(phi);
     }
-    //println("\n\n");
   }
 
   void generateFlatFrame(PVector off) {
     rotation = new PVector(off.x, off.y);
   }
 
-  ArrayList<Float> getPhiAngles(float radius, float resolution, float offset) {
+  ArrayList<Float> getPhiAngles(float resolution, float offset) {
     float z;
 
     ArrayList<Float> output = new ArrayList<Float>();
     for (int i = 0; i < resolution; i++) {
       z = resolution/2-i;
-      z = map(z, 0, resolution/2, 0, radius);
-      output.add(acos(z/radius)+offset);
-      //println(output.get(output.size()-1));
+      z = map(z, 0, resolution/2, 0, Radius);
+      output.add(acos(z/Radius)+offset);
     }
-    //println("\n\n");
     return output;
   }
 
@@ -192,11 +163,6 @@ class SphereFrame {
 
   PVector[][] getFlatFrame() {
     return flatFrame;
-  }
-
-  void setRadius(float r) {
-    radius = r;
-    updateUnitFrame();
   }
 }
 
