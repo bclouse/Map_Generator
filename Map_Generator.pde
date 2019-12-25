@@ -4,7 +4,7 @@ ArrayList<Slider> sliders;
 float stretch;
 int zoom;
 PVector offset;
-int scale = 1;
+float scale = 1;
 float Radius;
 boolean hasBeenUpdated;
 long current;
@@ -12,8 +12,8 @@ long elapsed;
 boolean invertWater;
 
 void setup() {
-  size(1000, 500);
-  scale = width/1000;
+  size(1500, 750);
+  scale = (float)width/((float)1000);
   noiseSeed = 1;
   offset = new PVector(0, 0, 0);    //initial globe rotations
   sliders = new ArrayList<Slider>();
@@ -128,11 +128,11 @@ void keyPressed() {
 
 //Prints the height value of the point that is clicked on the map
 void mouseClicked() {
-  if (mouseX >= m.pos.x*scale && mouseX < m.pos.x*scale+m.size.x*scale && mouseY >= m.pos.y*scale && mouseY < m.pos.y*scale+m.size.y*scale) {
-    float x = (mouseX-m.pos.x*scale)/scale;
-    float y = (mouseY-m.pos.y*scale)/scale;
+  if (mouseX >= m.pos.x && mouseX < m.pos.x+m.size.x*scale && mouseY >= m.pos.y && mouseY < m.pos.y+m.size.y*scale) {
+    float x = (float)(mouseX-m.pos.x)/scale;
+    float y = (float)(mouseY-m.pos.y)/scale;
     
-    println("Point ["+x+", "+y+"] has a value of "+m.heightMap[(int)x][(int)y]);
+    println("Point ["+mouseX+", "+mouseY+"] has been changed to ["+x+", "+y+"] and has a value of "+m.heightMap[(int)x][(int)y]);
   }
 }
 
