@@ -17,6 +17,7 @@ class Flat_Map {
   NoiseGenerator heightGenerator;
   NoiseGenerator waterGenerator;
   float stretch;
+  //SphereFrame sphereFrame;
 
   /*=============================================================
    ===============================================================
@@ -38,6 +39,7 @@ class Flat_Map {
     heightGenerator = new NoiseGenerator(w, h, z, s);
     waterGenerator = new NoiseGenerator(w, h, z*4, s+1);
     stretch = 20;
+    //sphereFrame = new SphereFrame(w, h);
   }
 
   /*=============================================================
