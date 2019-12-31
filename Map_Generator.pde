@@ -10,6 +10,7 @@ boolean hasBeenUpdated;
 long current;
 long elapsed;
 boolean invertWater;
+float ZOOM;
 
 void setup() {
   size(2000, 1000);
@@ -17,6 +18,7 @@ void setup() {
   noiseSeed = 1;
   offset = new PVector(0, 0, 0);    //initial globe rotations
   sliders = new ArrayList<Slider>();
+  ZOOM = 1;
   int n = 0;
   sliders.add(new Slider(1, 15, 4, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "Octaves"));                  //Adjusts the number of octaves in the noise function
   sliders.add(new Slider(0.3, 0.7, .55, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Lacunarity"));        //Lacunarity is how much each octave affects the overall output of the 
@@ -26,6 +28,7 @@ void setup() {
   sliders.add(new Slider(180, -180, -offset.x, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "CW/CCW"));      //Spins the map clockwise/counter-clockwise around the poles
   sliders.add(new Slider(-90, 90, offset.y, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "Rotate U/D"));    //Rotates the map such that the poles become more visible
   sliders.add(new Slider(0, 360, -offset.z, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Slide L/R"));     //Slides the finished map left and right
+  sliders.add(new Slider(0, 1, 1, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Zoom"));     //Slides the finished map left and right
   
   //Initializes all of the map values before generating the first map
   Radius = sliders.get(4).getSliderValue();
@@ -68,13 +71,17 @@ void draw() {
   if (sliders.get(4).hasUpdated()) {
     Radius = sliders.get(4).getSliderValue();
     m.setZoom(sliders.get(4).getSliderValue());
-    m.waterGenerator.sphereFrame.updateUnitFrame();
+    m.waterGenerator.sphereFrame.updateUnitFrame(ZOOM);
     //println(Radius);
   }
   if (sliders.get(5).hasUpdated() || sliders.get(6).hasUpdated()|| sliders.get(7).hasUpdated()) {
     //println("UPDATE");
     offset.set(radians(-sliders.get(5).getSliderValue()), radians(sliders.get(6).getSliderValue()), -radians(sliders.get(7).getSliderValue()));
     m.setOffset(offset);
+  }
+  if (sliders.get(8).hasUpdated()) {
+    ZOOM = sliders.get(8).getSliderValue();
+    m.waterGenerator.sphereFrame.updateUnitFrame(ZOOM);
   }
   
   

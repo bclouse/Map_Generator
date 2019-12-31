@@ -31,7 +31,7 @@ class SphereFrame {
 
 
 
-    updateUnitFrame();
+    updateUnitFrame(1);
   }
 
   /*=============================================================
@@ -40,9 +40,9 @@ class SphereFrame {
    ===============================================================
    =============================================================*/
 
-  void updateUnitFrame() {
+  void updateUnitFrame(float zPercentage) {
     float theta;
-    phis = getPhiAngles(size.y, 0);
+    phis = getPhiAngles(size.y, 0, zPercentage);
     PVector dummy;
     int phi;
     int t;
@@ -51,8 +51,8 @@ class SphereFrame {
 
     for (int y = 0; y < size.y; y++) {
       for (int x = 0; x < size.x; x++) {
-        theta = x/size.x*360;
-        dummy = getCartesian(new PVector(Radius, radians(theta), phis.get(y)));
+        theta = x/size.x*360-180;
+        dummy = getCartesian(new PVector(Radius, radians(theta*ZOOM), phis.get(y)));
         unitFrame[x][y] = new PVector(dummy.x, dummy.y, dummy.z);
         flatFrame[x][y] = new PVector(dummy.x, dummy.y, dummy.z);
         wireFrame[x][y] = new PVector(0, 0, 0);
@@ -133,17 +133,17 @@ class SphereFrame {
     rotation = new PVector(off.x, off.y);
   }
 
-  ArrayList<Float> getPhiAngles(float resolution, float offset) {
-    float z;
+  ArrayList<Float> getPhiAngles(float resolution, float offset, float zPercentage) {
+  float z;
 
-    ArrayList<Float> output = new ArrayList<Float>();
-    for (int i = 0; i < resolution; i++) {
-      z = resolution/2-i;
-      z = map(z, 0, resolution/2, 0, Radius);
-      output.add(acos(z/Radius)+offset);
-    }
-    return output;
+  ArrayList<Float> output = new ArrayList<Float>();
+  for (int i = 0; i < resolution; i++) {
+    z = (resolution/2-i)*zPercentage;
+    z = map(z, 0, resolution/2, 0, Radius);
+    output.add(acos(z/Radius)+offset);
   }
+  return output;
+}
 
   PVector getCartesian(PVector sphericalInfo) {                            //Spherical Info must be ordered as so: [radius, theta, phi]
     float x = sphericalInfo.x*sin(sphericalInfo.z)*cos(sphericalInfo.y);       //x = r*sin(phi)*cos(theta)

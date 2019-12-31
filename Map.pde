@@ -85,7 +85,7 @@ class Flat_Map {
         }
         
         //Manually darkens the pixel if the wireFrame value is close to the correct latitude and longitude
-        if (wire[x][y].x < 0.3 || wire[x][y].y < 0.3) {
+        if (wire[x][y].x < 0.3*ZOOM || wire[x][y].y < 0.3*ZOOM) {
           c = mapImage.pixels[index];
           
           //A bug with PImage prevented transparency most of the time and therefor, couldn't be shown on top of the normal mapImage
@@ -105,6 +105,10 @@ class Flat_Map {
    
   void show() {
     image(mapImage, pos.x, pos.y, size.x*scale, size.y*scale);
+    noFill();
+    strokeWeight(2*scale);
+    stroke(200,0,0);
+    ellipse(pos.x+scale*size.x/2, pos.y+scale*size.y/2, 50*scale, 50*scale);
 
     //noStroke();
     //fill(0, 255, 0);
