@@ -156,14 +156,12 @@ void mouseClicked() {
     //println("Mouse Points:  "+mouseX+"\t\t"+mouseY);
     //println("Mapped Points: "+newx+"\t\t"+newy);
     PVector p = m.waterGenerator.sphereFrame.flatFrame[newx][newy];
-    float t = degrees(getTheta(p));
-    float ph = degrees(getPhi(p));
-    float alpha = t+270;
-    println("\nTheta: "+t+"\t\tPhi: "+ph+"\t\tAlpha: "+alpha);
+    float t = normalizeAngle(degrees(getTheta(p)));
+    float ph = 90-abs(180-degrees(getPhi(p)));
+    //println("\nTheta: "+t+"\t\tPhi: "+ph);
     
-    t = normalizeAngle(t-90);
-    ph = degrees(getPhi(p));
-    alpha = normalizeAngle(alpha);
+    //t = normalizeAngle(t-90);
+    //ph = degrees(getPhi(p));
     
     
     //println("\n\n"+t);
@@ -174,14 +172,14 @@ void mouseClicked() {
       t = 360-t;
     }
     
-    ph = abs(180-ph)-90;
+    //ph = 90-abs(180-ph);
     //println("Theta: "+t+"\t\tPhi: "+ph+"\t\tAlpha: "+alpha);
-    println("Theta: "+t+"\t\tPhi: "+ph+"\t\tAlpha: "+alpha);
+    //println("Theta: "+t+"\t\tPhi: "+ph);
     //println(t+"\n\n");
 
-    //sliders.get(5).setSliderValue(t);
-    //sliders.get(6).setSliderValue(ph);
-    //sliders.get(7).setSliderValue(270);
+    sliders.get(5).setSliderValue(t);
+    sliders.get(6).setSliderValue(ph);
+    sliders.get(7).setSliderValue(0);
 
     sliders.get(5).update();
     sliders.get(6).update();

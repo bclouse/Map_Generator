@@ -107,7 +107,7 @@ class Flat_Map {
     image(mapImage, pos.x, pos.y, size.x*scale, size.y*scale);
     noFill();
     strokeWeight(2*scale);
-    stroke(200,0,0);
+    stroke(200,0,0,64);
     ellipse(pos.x+scale*size.x/2, pos.y+scale*size.y/2, 50*scale, 50*scale);
 
     //noStroke();

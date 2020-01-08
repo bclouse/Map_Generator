@@ -84,13 +84,13 @@ class SphereFrame {
       }
       
 
-      theta = degrees(getTheta(flatFrame[x][y]))%2700;
-      if (theta >=2700/2) {
-        theta = 2700-theta;
+      theta = degrees(getTheta(flatFrame[x][y]))%30;
+      if (theta >=30/2) {
+        theta = 30-theta;
       }
-      phi = degrees(getPhi(flatFrame[x][y]))%90;
-      if (phi >= 90/2) {
-        phi = 90-phi;
+      phi = degrees(getPhi(flatFrame[x][y]))%15;
+      if (phi >= 15/2) {
+        phi = 15-phi;
       }
       wireFrame[x][y].set(theta, phi, 0);
 
@@ -184,7 +184,7 @@ PVector rotX(float a, PVector p) {
 }
 
 PVector rotY(float a, PVector p) {
-  return new PVector(p.z*cos(a)-p.x*sin(a), p.y, p.z*sin(a)+p.x*cos(a));
+  return new PVector(p.z*sin(a)+p.x*cos(a), p.y, p.z*cos(a)-p.x*sin(a));
 }
 
 PVector rotZ(float a, PVector p) {
