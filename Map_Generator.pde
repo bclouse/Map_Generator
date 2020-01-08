@@ -24,12 +24,12 @@ void setup() {
   sliders.add(new Slider(1, 15, 4, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "Octaves"));                  //Adjusts the number of octaves in the noise function
   sliders.add(new Slider(0.3, 0.7, .55, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Lacunarity"));        //Lacunarity is how much each octave affects the overall output of the 
   sliders.add(new Slider(0, 1, .5, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Water"));                  //Sets the height of the water
-  sliders.add(new Slider(0, 50, 20, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "Sigmoid Stretch"));        //Determines how quickly the sigmoid values go to 0 or 1
+  sliders.add(new Slider(0, 50, 50, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "Sigmoid Stretch"));        //Determines how quickly the sigmoid values go to 0 or 1
   sliders.add(new Slider(0, 5, 2, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Hill Index"));              //The higher the value, the more the noise function oscillates from high to low
   sliders.add(new Slider(-180, 180, -offset.x, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "CW/CCW"));      //Spins the map clockwise/counter-clockwise around the poles
   sliders.add(new Slider(-90, 90, offset.y, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, true, "Rotate U/D"));    //Rotates the map such that the poles become more visible
   sliders.add(new Slider(0, 360, offset.z, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Slide L/R"));     //Slides the finished map left and right
-  sliders.add(new Slider(0.001, 1, 1, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Zoom"));     //Slides the finished map left and right
+  //sliders.add(new Slider(0.001, 1, 1, new PVector(750*scale, (50+50*(n++))*scale), new PVector(400*scale, 30*scale), 15*scale, false, "Zoom"));     //Slides the finished map left and right
 
   //Initializes all of the map values before generating the first map
   Radius = sliders.get(4).getSliderValue();
@@ -42,6 +42,7 @@ void setup() {
   m.stretch = sliders.get(3).getSliderValue();
   m.setZoom(Radius);
   invertWater = false;
+  sliders.get(3).lock();
 
   //Generates the map
   m.generatePixels();
@@ -80,10 +81,10 @@ void draw() {
     offset.set(radians(-sliders.get(5).getSliderValue()), radians(sliders.get(6).getSliderValue()), -radians(sliders.get(7).getSliderValue()));
     m.setOffset(offset);
   }
-  if (sliders.get(8).hasUpdated()) {
-    ZOOM = sliders.get(8).getSliderValue();
-    m.waterGenerator.sphereFrame.updateUnitFrame(ZOOM);
-  }
+  //if (sliders.get(8).hasUpdated()) {
+  //  ZOOM = sliders.get(8).getSliderValue();
+  //  m.waterGenerator.sphereFrame.updateUnitFrame(ZOOM);
+  //}
 
 
   //Generates the new map image only if the sliders have been updated.
@@ -144,38 +145,21 @@ void keyPressed() {
 }
 
 
-//*Prints the height value of the point that is clicked on the map
+//Prints the height value of the point that is clicked on the map
 void mouseClicked() {
   if (mouseX >= m.pos.x && mouseX < m.pos.x+m.size.x*scale && mouseY >= m.pos.y && mouseY < m.pos.y+m.size.y*scale) {
     int newx = (int)map(mouseX, m.pos.x, m.pos.x+m.size.x*scale, 0, m.size.x);
     int newy = (int)map(mouseY, m.pos.y, m.pos.y+m.size.y*scale, 0, m.size.y);
-    //println("\n\n");
-    //println("Map Size:      "+m.size.x+"\t\t"+m.size.y);
-    //println("Min Position:  "+m.pos.x+"\t\t"+m.pos.y);
-    //println("Max Position:  "+(m.pos.x+m.size.x*scale)+"\t"+(m.pos.y+m.size.y*scale));
-    //println("Mouse Points:  "+mouseX+"\t\t"+mouseY);
-    //println("Mapped Points: "+newx+"\t\t"+newy);
+
     PVector p = m.waterGenerator.sphereFrame.flatFrame[newx][newy];
     float t = normalizeAngle(degrees(getTheta(p)));
     float ph = 90-abs(180-degrees(getPhi(p)));
-    //println("\nTheta: "+t+"\t\tPhi: "+ph);
-    
-    //t = normalizeAngle(t-90);
-    //ph = degrees(getPhi(p));
-    
-    
-    //println("\n\n"+t);
-    
+
     if (t <= 180) {
       t *= -1;
     } else {
       t = 360-t;
     }
-    
-    //ph = 90-abs(180-ph);
-    //println("Theta: "+t+"\t\tPhi: "+ph+"\t\tAlpha: "+alpha);
-    //println("Theta: "+t+"\t\tPhi: "+ph);
-    //println(t+"\n\n");
 
     sliders.get(5).setSliderValue(t);
     sliders.get(6).setSliderValue(ph);
@@ -184,17 +168,29 @@ void mouseClicked() {
     sliders.get(5).update();
     sliders.get(6).update();
     sliders.get(7).update();
-    //println("\nAngles: "+t+"\t\t"+ph);
-    //println("Angles: "+sliders.get(7).getSliderValue()+"\t\t"+ph);
-
-    //offset.set(-getTheta(p),getPhi(p),
-    //float x = (float)(mouseX-m.pos.x)/scale;
-    //float y = (float)(mouseY-m.pos.y)/scale;
-
-    //println("Point ["+mouseX+", "+mouseY+"] has been changed to ["+x+", "+y+"] and has a value of "+m.heightMap[(int)x][(int)y]);
   }
 }
-//*/
+
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();  //-1 is scroll up and 1 is scroll down
+
+  if (e == -1) {
+    if (ZOOM > 0.0012) {
+      ZOOM *= 0.9;
+    } else {
+      ZOOM = 0.001;
+    }
+  } else {
+    if (ZOOM < 0.9) {
+      ZOOM /= 0.9;
+    } else {
+      ZOOM = 1;
+    }
+  }
+  m.waterGenerator.sphereFrame.updateUnitFrame(ZOOM);
+  m.generatePixels();
+  hasBeenUpdated = true;
+}
 
 
 //tic toc functions used to calculate time elapsed between two lines of code.
@@ -220,7 +216,7 @@ void toc(boolean nano) {
 
 float normalizeAngle(float a) {
   float out = a;
-  
+
   if (out < 0) {
     do {
       out += 360;
@@ -230,6 +226,6 @@ float normalizeAngle(float a) {
       out -= 360;
     } while (out < 0 && out >= 360);
   }
-  
+
   return out;
 }
