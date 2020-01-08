@@ -51,66 +51,6 @@ class NoiseGenerator {
     noiseMap[x][y] = sigmoid(((noise(positions.x+10000, positions.y+10000, positions.z+10000)-waterLevel+0.5)*stretch)-(stretch/2));
   }
 
-  ////Fills the noiseMap at location 
-  //void generateNoise(int noiseOctaves, float lac) {
-  //  PVector positions;// = sphereFrame.getFlatFrame();
-  //  float zmax = 0;
-  //  float zmin = 100;
-  //  float md = 0;
-
-  //  noiseSeed(seed);
-  //  noiseDetail(noiseOctaves, lac);
-
-  //  for (int y = 0; y < size.y; y++) {    //goes through the list of acceptable phi angles (all pixels in the y direction)
-  //    for (int x = 0; x < size.x; x++) {                 //goes through all of the pixels in the x direction
-  //      positions = sphereFrame.updateRotationAt(x, y);
-  //      noiseMap[x][y] = noise(positions.x+10000, positions.y+10000, positions.z+10000);
-  //      if (positions.z > zmax) {
-  //        zmax = positions.z;
-  //        max.set(x, y, 0);
-  //      }
-  //      if (positions.z < zmin) {
-  //        zmin = positions.z;
-  //        min.set(x, y, 0);
-  //      }
-  //      if (positions.x > md) {
-  //        md = positions.x;
-  //        mid.set(x, y, 0);
-  //      }
-  //    }
-  //  }
-  //}
-
-  //void generateSigmoidNoise(int noiseOctaves, float lac, float stretch, float waterLevel) {
-  //  PVector positions;// = sphereFrame.getFlatFrame();
-  //  float zmax = 0;
-  //  float zmin = 100;
-  //  float md = 0;
-
-  //  resetNoiseMap();
-  //  noiseSeed(seed);
-
-  //  for (int y = 0; y < size.y; y++) {    //goes through the list of acceptable phi angles (all pixels in the y direction)
-  //    for (int x = 0; x < size.x; x++) {                 //goes through all of the pixels in the x direction
-  //      positions = sphereFrame.updateRotationAt(x, y);
-  //      noiseDetail(noiseOctaves, lac);
-  //      noiseMap[x][y] = sigmoid(((noise(positions.x+10000, positions.y+10000, positions.z+10000)-waterLevel+0.5)*stretch)-(stretch/2));
-  //      if (positions.z > zmax) {
-  //        zmax = positions.z;
-  //        max.set(x, y, 0);
-  //      }
-  //      if (positions.z < zmin) {
-  //        zmin = positions.z;
-  //        min.set(x, y, 0);
-  //      }
-  //      if (positions.x > md) {
-  //        md = positions.x;
-  //        mid.set(x, y, 0);
-  //      }
-  //    }
-  //  }
-  //}
-
   /*=============================================================
    ===============================================================
    CALCULATION FUNCTIONS

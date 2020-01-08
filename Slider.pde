@@ -20,7 +20,7 @@ class Slider {
    ===============================================================
    =============================================================*/
 
-  Slider (float maximumValue, float minimumValue, float startingValue, PVector p, PVector s, float bh, boolean snapInteger, String l) {
+  Slider ( float maximumValue,float minimumValue, float startingValue, PVector p, PVector s, float bh, boolean snapInteger, String l) {
     max = maximumValue;
     min = minimumValue;
     val = startingValue;
@@ -171,5 +171,16 @@ class Slider {
 
   void resetUpdate() {
     hasBeenUpdated = false;
+  }
+  
+  void setSliderValue(float v) {
+    if (v <= min && v >= max) {
+      val = v;
+      hasBeenUpdated = true;
+      sliderPos.x = map(val,min,max,pos.x+size.x/2, pos.x-size.x/2);
+    } else {
+      println("Invalid input: "+v);
+      println("Min: "+min+"\nMax: "+max);
+    }
   }
 }

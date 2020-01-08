@@ -77,20 +77,20 @@ class SphereFrame {
         flatFrame[x][y].set(rotZ(rotation.z, flatFrame[x][y]));
       }
       if (rotation.y != 0) {
-        flatFrame[x][y].set(rotX(rotation.y, flatFrame[x][y]));
+        flatFrame[x][y].set(rotY(rotation.y, flatFrame[x][y]));
       }
       if (rotation.x != 0) {
         flatFrame[x][y].set(rotZ(rotation.x, flatFrame[x][y]));
       }
       
 
-      theta = degrees(getTheta(flatFrame[x][y]))%30;
-      if (theta >=30/2) {
-        theta = 30-theta;
+      theta = degrees(getTheta(flatFrame[x][y]))%2700;
+      if (theta >=2700/2) {
+        theta = 2700-theta;
       }
-      phi = degrees(getPhi(flatFrame[x][y]))%15;
-      if (phi >= 15/2) {
-        phi = 15-phi;
+      phi = degrees(getPhi(flatFrame[x][y]))%90;
+      if (phi >= 90/2) {
+        phi = 90-phi;
       }
       wireFrame[x][y].set(theta, phi, 0);
 
